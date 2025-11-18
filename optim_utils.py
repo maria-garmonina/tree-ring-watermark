@@ -96,7 +96,16 @@ def measure_similarity(images, prompt, model, clip_preprocess, tokenizer, device
         return (image_features @ text_features.T).mean(-1)
 
 
+
 def get_dataset(args):
+    # NEW
+    if getattr(args, "prompt_file", None):
+        with open(args.prompt_file, "r") as f:
+            prompts = [line.strip() for line in f if line.strip()]
+        dataset = [{"prompt": p} for p in prompts]
+        prompt_key = 'prompt'
+        return dataset, prompt_key
+
     if 'laion' in args.dataset:
         dataset = load_dataset(args.dataset)['train']
         prompt_key = 'TEXT'
@@ -110,6 +119,7 @@ def get_dataset(args):
         prompt_key = 'Prompt'
 
     return dataset, prompt_key
+
 
 
 def circle_mask(size=64, r=10, x_offset=0, y_offset=0):
