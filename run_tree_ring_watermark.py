@@ -20,7 +20,11 @@ def main(args):
         wandb.init(project='diffusion_watermark', name=args.run_name, tags=['tree_ring_watermark'])
         wandb.config.update(args)
         table = wandb.Table(columns=['gen_no_w', 'no_w_clip_score', 'gen_w', 'w_clip_score', 'prompt', 'no_w_metric', 'w_metric'])
-    
+
+    # NEW
+    if args.output_dir is not None:
+        os.makedirs(args.output_dir, exist_ok=True)
+        
     # load diffusion model
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     
@@ -96,6 +100,16 @@ def main(args):
             latents=init_latents_w,
             )
         orig_image_w = outputs_w.images[0]
+
+        # NEW: save images to drive
+        if args.output_dir is not None:
+            base = f"{args.run_name}_{i:06d}"
+            no_w_path = os.path.join(args.output_dir, base + "_no_w.png")
+            w_path    = os.path.join(args.output_dir, base + "_w.png")
+
+            orig_image_no_w.save(no_w_path)
+            orig_image_w.save(w_path)
+
 
         ### test watermark
         # distortion
