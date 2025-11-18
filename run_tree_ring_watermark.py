@@ -189,6 +189,9 @@ if __name__ == '__main__':
     parser.add_argument('--max_num_log_image', default=100, type=int)
     parser.add_argument('--gen_seed', default=0, type=int)
 
+    # NEW
+    parser.add_argument('--prompt_file', default=None)
+
     # watermark
     parser.add_argument('--w_seed', default=999999, type=int)
     parser.add_argument('--w_channel', default=0, type=int)
