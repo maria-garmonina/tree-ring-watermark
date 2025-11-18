@@ -151,6 +151,15 @@ def main(args):
             clip_scores.append(w_no_sim)
             clip_scores_w.append(w_sim)
 
+            # NEW: Logging every step
+            wandb.log({
+                "no_w_metric": no_w_metric,
+                "w_metric": w_metric,
+                "w_no_sim": w_no_sim,
+                "w_sim": w_sim,
+                "step": i,
+            })
+
     # roc
     preds = no_w_metrics +  w_metrics
     t_labels = [0] * len(no_w_metrics) + [1] * len(w_metrics)
