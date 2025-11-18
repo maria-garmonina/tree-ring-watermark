@@ -200,6 +200,7 @@ if __name__ == '__main__':
 
     # NEW
     parser.add_argument('--prompt_file', default=None)
+    parser.add_argument('--output_dir', default=None)
 
     # watermark
     parser.add_argument('--w_seed', default=999999, type=int)
